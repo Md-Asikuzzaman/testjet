@@ -76,11 +76,15 @@ export default function Home() {
         <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted-foreground)]">
-              AI-Powered Engineering Tool
+              AI Powered Test Generator
             </p>
             <h1 className="mt-1 text-2xl font-bold tracking-tight md:text-3xl">
-              Unit Test Generator
+              TestJet - Supercharge Your Testing with AI
             </h1>
+            <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+              Generate robust test suites, cleaner components, and actionable
+              quality insights.
+            </p>
           </div>
 
           <ThemeToggle theme={theme} onToggle={toggleTheme} />

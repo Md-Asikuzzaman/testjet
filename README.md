@@ -1,6 +1,6 @@
-# AI Unit Test Generator
+# TestJet
 
-AI-powered web app that generates Jest + React Testing Library unit tests from React or Next.js component code.
+TestJet is an AI-powered web app that generates Jest + React Testing Library unit tests, optimized component code, and senior-level insights from React or Next.js component input.
 
 ## Stack
 

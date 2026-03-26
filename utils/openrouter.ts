@@ -265,7 +265,7 @@ export async function generateUnitTest(
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
           "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "AI Unit Test Generator",
+          "X-Title": "TestJet",
         },
         body: JSON.stringify(payload),
       });

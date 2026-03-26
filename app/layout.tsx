@@ -13,9 +13,9 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Unit Test Generator",
+  title: "TestJet | AI Unit Test Generator",
   description:
-    "Generate production-ready Jest and React Testing Library unit tests from React or Next.js components.",
+    "TestJet generates production-ready Jest and React Testing Library tests, optimized code, and senior-level insights from React or Next.js components.",
 };
 
 export default function RootLayout({
