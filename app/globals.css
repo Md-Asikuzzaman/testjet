@@ -86,6 +86,50 @@ body {
     color-mix(in srgb, var(--foreground) 4%, transparent);
 }
 
+.editor-top-bar {
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent-2),
+    var(--accent-3)
+  );
+  overflow: hidden;
+}
+
+.editor-loading-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.92),
+    transparent
+  );
+  transform: translateX(0);
+  animation: editor-loading-shimmer 1.1s linear infinite;
+  will-change: transform;
+}
+
+@keyframes editor-loading-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-loading-bar::after {
+    animation: none;
+  }
+}
+
 .editor-input-pre,
 .editor-input-textarea {
   margin: 0;

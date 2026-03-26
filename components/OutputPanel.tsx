@@ -51,6 +51,7 @@ const scoreMeta = [
 export function OutputPanel({ generated }: OutputPanelProps) {
   const [activeTab, setActiveTab] = useState<OutputTab>("tests");
   const [copiedTab, setCopiedTab] = useState<OutputTab | null>(null);
+  const canCopyActiveTab = activeTab === "tests" || activeTab === "optimized";
 
   const activeContent = useMemo<string>(() => {
     if (activeTab === "tests") {
@@ -111,7 +112,7 @@ export function OutputPanel({ generated }: OutputPanelProps) {
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(tab)}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition ${
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition cursor-pointer ${
                   activeTab === tab
                     ? "bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-[var(--accent-contrast)] shadow-[0_10px_28px_-14px_var(--accent)]"
                     : "border border-[var(--line)] bg-[var(--panel-muted)] text-[var(--muted-foreground)] hover:border-[var(--accent)]"
@@ -123,19 +124,6 @@ export function OutputPanel({ generated }: OutputPanelProps) {
             );
           })}
         </div>
-
-        <button
-          type="button"
-          onClick={onCopy}
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
-        >
-          {copiedTab === activeTab ? (
-            <FiCheck className="size-4" />
-          ) : (
-            <FiClipboard className="size-4" />
-          )}
-          {copiedTab === activeTab ? "Copied" : `Copy ${tabLabels[activeTab]}`}
-        </button>
       </div>
 
       <div className="h-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel-muted)]">
@@ -236,18 +224,35 @@ export function OutputPanel({ generated }: OutputPanelProps) {
             </ul>
           </div>
         ) : (
-          <div className="themed-scrollbar h-full overflow-auto">
-            <pre className="output-code-pre min-h-full min-w-max p-4 text-sm leading-7">
-              <code
-                dangerouslySetInnerHTML={{
-                  __html: Prism.highlight(
-                    activeContent,
-                    Prism.languages.tsx,
-                    "tsx",
-                  ),
-                }}
-              />
-            </pre>
+          <div className="relative h-full overflow-hidden">
+            {canCopyActiveTab ? (
+              <button
+                type="button"
+                onClick={onCopy}
+                aria-label={`Copy ${tabLabels[activeTab]}`}
+                title="Copy"
+                className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--panel)] text-[var(--muted-foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] cursor-pointer"
+              >
+                {copiedTab === activeTab ? (
+                  <FiCheck className="size-4" />
+                ) : (
+                  <FiClipboard className="size-4" />
+                )}
+              </button>
+            ) : null}
+            <div className="themed-scrollbar h-full overflow-auto">
+              <pre className="output-code-pre min-h-full min-w-max p-4 text-sm leading-7">
+                <code
+                  dangerouslySetInnerHTML={{
+                    __html: Prism.highlight(
+                      activeContent,
+                      Prism.languages.tsx,
+                      "tsx",
+                    ),
+                  }}
+                />
+              </pre>
+            </div>
           </div>
         )}
       </div>

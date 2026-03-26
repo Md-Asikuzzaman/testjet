@@ -105,7 +105,11 @@ export default function Home() {
         ) : null}
 
         <div className="grid gap-4 lg:grid-cols-2">
-          <EditorPanel value={sourceCode} onChange={setSourceCode} />
+          <EditorPanel
+            value={sourceCode}
+            onChange={setSourceCode}
+            isLoading={isLoading}
+          />
           <OutputPanel generated={generated} />
         </div>
       </div>

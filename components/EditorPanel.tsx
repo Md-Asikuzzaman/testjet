@@ -12,15 +12,24 @@ import "prismjs/components/prism-tsx";
 type EditorPanelProps = {
   value: string;
   onChange: (value: string) => void;
+  isLoading: boolean;
 };
 
-export function EditorPanel({ value, onChange }: EditorPanelProps) {
+export function EditorPanel({
+  value,
+  onChange,
+  isLoading,
+}: EditorPanelProps) {
   const lineCount = useMemo(() => value.split("\n").length, [value]);
   const charCount = useMemo(() => value.length, [value]);
 
   return (
     <section className="panel-surface relative flex h-[560px] flex-col overflow-hidden p-4 md:p-5">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-2)] to-[var(--accent-3)]" />
+      <div
+        className={`editor-top-bar pointer-events-none absolute inset-x-0 top-0 h-1 ${
+          isLoading ? "editor-loading-bar" : ""
+        }`}
+      />
 
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
@@ -44,18 +53,20 @@ export function EditorPanel({ value, onChange }: EditorPanelProps) {
         </div>
       </div>
 
-      <div className="code-editor-surface themed-scrollbar h-full min-h-0 w-full overflow-auto rounded-xl border border-[var(--line)] text-sm leading-7 text-[var(--foreground)] transition focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent-soft)]">
-        <Editor
-          value={value}
-          onValueChange={onChange}
-          highlight={(code) =>
-            Prism.highlight(code, Prism.languages.tsx, "tsx")
-          }
-          padding={16}
-          className="min-h-full w-full font-mono"
-          textareaClassName="editor-input-textarea"
-          preClassName="editor-input-pre"
-        />
+      <div className="code-editor-surface relative h-full min-h-0 w-full overflow-hidden rounded-xl border border-[var(--line)] text-sm leading-7 text-[var(--foreground)] transition focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent-soft)]">
+        <div className="themed-scrollbar h-full overflow-auto">
+          <Editor
+            value={value}
+            onValueChange={onChange}
+            highlight={(code) =>
+              Prism.highlight(code, Prism.languages.tsx, "tsx")
+            }
+            padding={16}
+            className="min-h-full w-full font-mono"
+            textareaClassName="editor-input-textarea"
+            preClassName="editor-input-pre"
+          />
+        </div>
       </div>
 
       <div className="mt-3 flex items-center justify-between text-xs text-[var(--muted-foreground)]">
