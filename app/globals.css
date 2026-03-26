@@ -81,14 +81,7 @@ body {
 }
 
 .code-editor-surface {
-  background:
-    linear-gradient(180deg, var(--editor-bg), var(--editor-bg-2)),
-    repeating-linear-gradient(
-      180deg,
-      transparent 0,
-      transparent 27px,
-      color-mix(in srgb, var(--line) 20%, transparent) 28px
-    );
+  background: linear-gradient(180deg, var(--editor-bg), var(--editor-bg-2));
   box-shadow: inset 0 1px 0
     color-mix(in srgb, var(--foreground) 4%, transparent);
 }
