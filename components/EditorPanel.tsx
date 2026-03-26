@@ -20,6 +20,14 @@ export function EditorPanel({ value, onChange }: EditorPanelProps) {
           Component Input
         </h2>
         <div className="inline-flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            disabled={!value}
+            className="cursor-pointer rounded-full border border-[var(--line)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--muted-foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Clear
+          </button>
           <span className="rounded-full bg-[var(--accent-soft)] px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--accent)]">
             React / Next.js
           </span>
