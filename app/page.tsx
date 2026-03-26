@@ -42,8 +42,7 @@ export default function Home() {
     "test-generator-source-code",
     starterComponent,
   );
-  const { generated, isLoading, error, generate, debounceMs } =
-    useTestGenerator();
+  const { generated, isLoading, error, generate } = useTestGenerator();
   const { theme, toggleTheme } = useTheme();
 
   const onGenerate = () => {
@@ -94,7 +93,6 @@ export default function Home() {
 
         <div className="mb-4 flex items-center justify-between gap-2 text-xs text-[var(--muted-foreground)]">
           <span>Shortcut: Ctrl/Cmd + Enter to generate</span>
-          <span>Debounce: {debounceMs}ms</span>
         </div>
 
         {error ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import type { GeneratedArtifacts } from "@/utils/openrouter";
 import { generateUnitTest } from "@/utils/openrouter";
@@ -10,10 +10,23 @@ type UseTestGeneratorResult = {
   isLoading: boolean;
   error: string | null;
   generate: (sourceCode: string) => void;
-  debounceMs: number;
 };
 
-const DEBOUNCE_MS = 250;
+function hasBasicComponentStructure(code: string): boolean {
+  const hasComponentDeclaration =
+    /(export\s+default\s+function|export\s+function|function\s+[A-Z]\w*|const\s+[A-Z]\w*\s*=\s*\(?[^=]*=>|class\s+[A-Z]\w*\s+extends\s+React\.Component)/m.test(
+      code,
+    );
+  const hasJsxLikeMarkup = /<\/?[A-Za-z][\w:-]*(\s[^>]*)?>/m.test(code);
+  const hasFragmentMarkup = /<>|<\/>/.test(code);
+  const hasReturnKeyword = /\breturn\b/m.test(code);
+
+  return (
+    hasComponentDeclaration &&
+    (hasJsxLikeMarkup || hasFragmentMarkup) &&
+    hasReturnKeyword
+  );
+}
 
 export function useTestGenerator(): UseTestGeneratorResult {
   const [generated, setGenerated] = useState<GeneratedArtifacts>({
@@ -36,7 +49,6 @@ export function useTestGenerator(): UseTestGeneratorResult {
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const debounceRef = useRef<number | null>(null);
 
   const generate = useCallback((sourceCode: string) => {
     const code = sourceCode.trim();
@@ -46,35 +58,29 @@ export function useTestGenerator(): UseTestGeneratorResult {
       return;
     }
 
-    setError(null);
-    setIsLoading(true);
-
-    if (debounceRef.current) {
-      window.clearTimeout(debounceRef.current);
+    if (!hasBasicComponentStructure(code)) {
+      setError(
+        "Input does not look like a valid React/Next.js component. Add a component declaration and returned JSX before generating.",
+      );
+      return;
     }
 
-    debounceRef.current = window.setTimeout(async () => {
-      try {
-        const output = await generateUnitTest(code);
+    setError(null);
+    setIsLoading(true);
+    generateUnitTest(code)
+      .then((output) => {
         setGenerated(output);
-      } catch (generationError) {
+      })
+      .catch((generationError: unknown) => {
         setError(
           generationError instanceof Error
             ? generationError.message
             : "Unexpected error while generating tests.",
         );
-      } finally {
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    }, DEBOUNCE_MS);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        window.clearTimeout(debounceRef.current);
-      }
-    };
+      });
   }, []);
 
   return {
@@ -82,6 +88,5 @@ export function useTestGenerator(): UseTestGeneratorResult {
     isLoading,
     error,
     generate,
-    debounceMs: DEBOUNCE_MS,
   };
 }

@@ -17,7 +17,7 @@ export function ActionBar({ onGenerate, isLoading }: ActionBarProps) {
           type="button"
           onClick={onGenerate}
           disabled={isLoading}
-          className="ai-cta-button group inline-flex cursor-pointer items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-[var(--accent-contrast)] transition disabled:cursor-not-allowed disabled:opacity-60"
+          className="ai-cta-button group inline-flex cursor-pointer items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 text-black"
         >
           {isLoading ? (
             <>
@@ -27,7 +27,7 @@ export function ActionBar({ onGenerate, isLoading }: ActionBarProps) {
           ) : (
             <>
               <FiZap className="size-4 transition group-hover:rotate-12" />
-              Generate AI Test Suite
+              Generate Test Suite
             </>
           )}
         </button>
