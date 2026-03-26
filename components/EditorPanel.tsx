@@ -1,6 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
+import Editor from "react-simple-code-editor";
+import Prism from "prismjs";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
 
 type EditorPanelProps = {
   value: string;
@@ -37,13 +44,19 @@ export function EditorPanel({ value, onChange }: EditorPanelProps) {
         </div>
       </div>
 
-      <textarea
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Paste your component code here..."
-        className="code-editor-surface themed-scrollbar h-full min-h-0 w-full resize-none rounded-xl border border-[var(--line)] p-4 font-mono text-sm leading-7 text-[var(--foreground)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-        spellCheck={false}
-      />
+      <div className="code-editor-surface themed-scrollbar h-full min-h-0 w-full overflow-auto rounded-xl border border-[var(--line)] text-sm leading-7 text-[var(--foreground)] transition focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent-soft)]">
+        <Editor
+          value={value}
+          onValueChange={onChange}
+          highlight={(code) =>
+            Prism.highlight(code, Prism.languages.tsx, "tsx")
+          }
+          padding={16}
+          className="min-h-full w-full font-mono"
+          textareaClassName="editor-input-textarea"
+          preClassName="editor-input-pre"
+        />
+      </div>
 
       <div className="mt-3 flex items-center justify-between text-xs text-[var(--muted-foreground)]">
         <span>

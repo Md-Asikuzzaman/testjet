@@ -9,19 +9,16 @@ import {
   FiFileText,
   FiList,
 } from "react-icons/fi";
-
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  oneLight,
-  oneDark,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
-
-import type { ThemeMode } from "@/hooks/useTheme";
+import Prism from "prismjs";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
 import type { GeneratedArtifacts } from "@/utils/openrouter";
 
 type OutputPanelProps = {
   generated: GeneratedArtifacts;
-  theme: ThemeMode;
 };
 
 type OutputTab = "tests" | "optimized" | "tips" | "insights";
@@ -51,7 +48,7 @@ const scoreMeta = [
   { key: "edgeCaseReadiness", label: "Edge Cases" },
 ] as const;
 
-export function OutputPanel({ generated, theme }: OutputPanelProps) {
+export function OutputPanel({ generated }: OutputPanelProps) {
   const [activeTab, setActiveTab] = useState<OutputTab>("tests");
   const [copiedTab, setCopiedTab] = useState<OutputTab | null>(null);
 
@@ -240,26 +237,17 @@ export function OutputPanel({ generated, theme }: OutputPanelProps) {
           </div>
         ) : (
           <div className="themed-scrollbar h-full overflow-auto">
-            <div className="themed-scrollbar min-w-max overflow-x-auto">
-              <SyntaxHighlighter
-                language="typescript"
-                style={theme === "dark" ? oneDark : oneLight}
-                customStyle={{
-                  margin: 0,
-                  minHeight: "100%",
-                  minWidth: "100%",
-                  background: "transparent",
-                  fontSize: "0.85rem",
-                  lineHeight: 1.7,
-                  whiteSpace: "pre",
-                  overflowX: "auto",
+            <pre className="output-code-pre min-h-full min-w-max p-4 text-sm leading-7">
+              <code
+                dangerouslySetInnerHTML={{
+                  __html: Prism.highlight(
+                    activeContent,
+                    Prism.languages.tsx,
+                    "tsx",
+                  ),
                 }}
-                wrapLongLines={false}
-                showLineNumbers
-              >
-                {activeContent}
-              </SyntaxHighlighter>
-            </div>
+              />
+            </pre>
           </div>
         )}
       </div>
