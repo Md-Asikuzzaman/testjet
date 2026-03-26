@@ -71,7 +71,7 @@ export default function Home() {
 
   return (
     <main className="relative flex-1 overflow-hidden px-4 py-6 md:px-8 md:py-8">
-      <div className="mx-auto flex w-full max-w-350 flex-col">
+      <div className="mx-auto flex w-full px-2 md:px-3 lg:px-5 flex-col">
         <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted-foreground)]">

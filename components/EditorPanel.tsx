@@ -15,11 +15,7 @@ type EditorPanelProps = {
   isLoading: boolean;
 };
 
-export function EditorPanel({
-  value,
-  onChange,
-  isLoading,
-}: EditorPanelProps) {
+export function EditorPanel({ value, onChange, isLoading }: EditorPanelProps) {
   const lineCount = useMemo(() => value.split("\n").length, [value]);
   const charCount = useMemo(() => value.length, [value]);
 
